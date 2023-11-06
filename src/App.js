@@ -35,7 +35,6 @@ function App() {
       <Logo />
       <Rank />
       <ImageLinkForm />
-
       {/*<FaceRecognition /> */}
     </div>
   );
