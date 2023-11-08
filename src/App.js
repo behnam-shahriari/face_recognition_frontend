@@ -51,11 +51,12 @@ class App extends Component {
   };
 
   onInputChange = (event) => {
-    console.log(event.target.value);
+    this.setState({ input: event.target.value });
   };
 
   onButtonSubmit = () => {
-    this.setState({ imageUrl: this.state.input });
+    const { input } = this.state;
+    this.setState({ imageUrl: input });
     ///////////////////////////////////////////////////////////////////////////////////////////////////
     // In this section, we set the user authentication, user and app ID, model details, and the URL
     // of the image we want as an input. Change these strings to run your own example.
@@ -70,7 +71,7 @@ class App extends Component {
     // Change these to whatever model and image URL you want to use
     const MODEL_ID = "face-detection";
     const MODEL_VERSION_ID = "6dc7e46bc9124c5c8824be4822abe105";
-    const IMAGE_URL = "https://samples.clarifai.com/metro-north.jpg";
+    const IMAGE_URL = input;
 
     ///////////////////////////////////////////////////////////////////////////////////
     // YOU DO NOT NEED TO CHANGE ANYTHING BELOW THIS LINE TO RUN THIS EXAMPLE
@@ -113,8 +114,12 @@ class App extends Component {
         "/outputs",
       requestOptions
     )
-      .then((response) => response.text())
-      .then((result) => console.log(result))
+      .then((response) => response.json())
+      .then((result) => {
+        result?.outputs[0]?.data?.regions?.map((boundry) => {
+          return console.log(boundry.region_info.bounding_box);
+        });
+      })
       .catch((error) => console.log("error", error));
   };
 
