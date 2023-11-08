@@ -5,6 +5,7 @@ import Logo from "./components/Logo/Logo";
 import Navigation from "./components/Navigation/Navigation";
 import Rank from "./components/Rank/Rank";
 import ParticlesBg from "particles-bg";
+import FaceRecognition from "./components/FaceRecognition/FaceRecognition";
 
 class App extends Component {
   constructor() {
@@ -25,6 +26,7 @@ class App extends Component {
       ],
       // Others
       input: "",
+      imageUrl: "",
     };
   }
 
@@ -53,6 +55,7 @@ class App extends Component {
   };
 
   onButtonSubmit = () => {
+    this.setState({ imageUrl: this.state.input });
     ///////////////////////////////////////////////////////////////////////////////////////////////////
     // In this section, we set the user authentication, user and app ID, model details, and the URL
     // of the image we want as an input. Change these strings to run your own example.
@@ -116,7 +119,7 @@ class App extends Component {
   };
 
   render() {
-    const { particleType } = this.state;
+    const { particleType, imageUrl } = this.state;
     return (
       <div className="App">
         <ParticlesBg className="particles" type={particleType} bg={true} />
@@ -127,7 +130,7 @@ class App extends Component {
           onInputChange={this.onInputChange}
           onButtonSubmit={this.onButtonSubmit}
         />
-        {/*<FaceRecognition /> */}
+        <FaceRecognition imageUrl={imageUrl} />
       </div>
     );
   }
