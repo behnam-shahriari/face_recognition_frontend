@@ -5,6 +5,7 @@ import Navigation from "./components/Navigation/Navigation";
 import Rank from "./components/Rank/Rank";
 import ParticlesBg from "particles-bg";
 import FaceRecognition from "./components/FaceRecognition/FaceRecognition";
+import GeneralImageRecognition from "./components/GeneralImageRecognition/GeneralImageRecognition";
 
 class App extends Component {
   constructor() {
@@ -23,6 +24,8 @@ class App extends Component {
         "tadpole",
         "fountain",
       ],
+      // Model
+      typeId: "fr", // Face Recognition
       // Others
       input: "",
       imageUrl: "",
@@ -143,8 +146,12 @@ class App extends Component {
       .finally(() => this.setState({ boxClaculated: true }));
   };
 
+  onTypeChange = (event) => {
+    this.setState({ typeId: event.target.value });
+  };
+
   render() {
-    const { particleType, imageUrl, box, boxClaculated } = this.state;
+    const { particleType, imageUrl, box, boxClaculated, typeId } = this.state;
     return (
       <div className="App">
         <ParticlesBg className="particles" type={particleType} bg={true} />
@@ -153,12 +160,22 @@ class App extends Component {
         <ImageLinkForm
           onInputChange={this.onInputChange}
           onButtonSubmit={this.onButtonSubmit}
+          onTypeChange={this.onTypeChange}
         />
-        <FaceRecognition
-          imageUrl={imageUrl}
-          box={box}
-          boxClaculated={boxClaculated}
-        />
+        {typeId === "fr" && imageUrl && (
+          <FaceRecognition
+            imageUrl={imageUrl}
+            box={box}
+            boxClaculated={boxClaculated}
+          />
+        )}
+        {typeId === "gir" && imageUrl && (
+          <GeneralImageRecognition
+            imageUrl={imageUrl}
+            box={box}
+            boxClaculated={boxClaculated}
+          />
+        )}
       </div>
     );
   }
