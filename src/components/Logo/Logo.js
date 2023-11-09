@@ -4,7 +4,7 @@ import "./Logo.css";
 
 const Logo = () => {
   return (
-    <div className="ma4 mt0 br2 shadow-2" style={{ width: "150px" }}>
+    <div className="ma4  br2 shadow-2" style={{ width: "150px" }}>
       <Tilt className="Tilt">
         <div className="pa1">
           <h1>

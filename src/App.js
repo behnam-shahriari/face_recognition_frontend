@@ -1,7 +1,6 @@
 import { Component } from "react";
 import "./App.css";
 import ImageLinkForm from "./components/ImageLinkForm/ImageLinkForm";
-import Logo from "./components/Logo/Logo";
 import Navigation from "./components/Navigation/Navigation";
 import Rank from "./components/Rank/Rank";
 import ParticlesBg from "particles-bg";
@@ -27,6 +26,8 @@ class App extends Component {
       // Others
       input: "",
       imageUrl: "",
+      box: [],
+      boxClaculated: false,
     };
   }
 
@@ -50,13 +51,30 @@ class App extends Component {
     });
   };
 
+  calculateFaceLocation = (data) => {
+    const clarifaiFace = data.region_info.bounding_box;
+    const image = document.getElementById("inputimage");
+    const width = Number(image.width);
+    const height = Number(image.height);
+    return {
+      leftCol: clarifaiFace.left_col * width,
+      topRow: clarifaiFace.top_row * height,
+      rightCol: width - clarifaiFace.right_col * width,
+      bottomRow: height - clarifaiFace.bottom_row * height,
+    };
+  };
+
+  displayFaceBox = (box) => {
+    this.state.box.push(box);
+  };
+
   onInputChange = (event) => {
     this.setState({ input: event.target.value });
   };
 
   onButtonSubmit = () => {
     const { input } = this.state;
-    this.setState({ imageUrl: input });
+    this.setState({ imageUrl: input, boxClaculated: false });
     ///////////////////////////////////////////////////////////////////////////////////////////////////
     // In this section, we set the user authentication, user and app ID, model details, and the URL
     // of the image we want as an input. Change these strings to run your own example.
@@ -117,25 +135,30 @@ class App extends Component {
       .then((response) => response.json())
       .then((result) => {
         result?.outputs[0]?.data?.regions?.map((boundry) => {
-          return console.log(boundry.region_info.bounding_box);
+          return this.displayFaceBox(this.calculateFaceLocation(boundry));
+          // return console.log(boundry.region_info.bounding_box);
         });
       })
-      .catch((error) => console.log("error", error));
+      .catch((error) => console.log("error", error))
+      .finally(() => this.setState({ boxClaculated: true }));
   };
 
   render() {
-    const { particleType, imageUrl } = this.state;
+    const { particleType, imageUrl, box, boxClaculated } = this.state;
     return (
       <div className="App">
         <ParticlesBg className="particles" type={particleType} bg={true} />
         <Navigation />
-        <Logo />
         <Rank />
         <ImageLinkForm
           onInputChange={this.onInputChange}
           onButtonSubmit={this.onButtonSubmit}
         />
-        <FaceRecognition imageUrl={imageUrl} />
+        <FaceRecognition
+          imageUrl={imageUrl}
+          box={box}
+          boxClaculated={boxClaculated}
+        />
       </div>
     );
   }
