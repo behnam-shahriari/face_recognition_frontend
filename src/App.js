@@ -6,6 +6,8 @@ import Rank from "./components/Rank/Rank";
 import ParticlesBg from "particles-bg";
 import GeneralImageRecognition from "./components/GeneralImageRecognition/GeneralImageRecognition";
 import ImagePlacement from "./components/ImagePlacement/ImagePlacement";
+import Signin from "./components/Signin/Signin";
+import Register from "./components/Register/Register";
 
 class App extends Component {
   constructor() {
@@ -32,6 +34,8 @@ class App extends Component {
       box: [],
       boxClaculated: false,
       generalImageOptions: [],
+      route: "signin",
+      isSignedIn: false,
     };
   }
 
@@ -178,6 +182,21 @@ class App extends Component {
     this.setState({ typeId: event.target.value });
   };
 
+  onRouteChange = (route) => {
+    if (route === "signout") {
+      this.setState({
+        isSignedIn: false,
+      });
+    } else if (route === "home") {
+      this.setState({
+        isSignedIn: true,
+      });
+    }
+    this.setState({
+      route: route,
+    });
+  };
+
   render() {
     const {
       particleType,
@@ -186,33 +205,48 @@ class App extends Component {
       boxClaculated,
       typeId,
       generalImageOptions,
+      route,
+      isSignedIn,
     } = this.state;
 
     return (
       <div className="App">
         <ParticlesBg className="particles" type={particleType} bg={true} />
-        <Navigation />
-        <Rank />
-        <ImageLinkForm
-          onInputChange={this.onInputChange}
-          onButtonSubmit={this.onButtonSubmit}
-          onTypeChange={this.onTypeChange}
+        <Navigation
+          onRouteChange={this.onRouteChange}
+          isSignedIn={isSignedIn}
         />
-
-        {imageUrl && (
-          <ImagePlacement
-            imageUrl={imageUrl}
-            box={box}
-            boxClaculated={boxClaculated}
-          />
-        )}
-        {typeId === "gir" && imageUrl && generalImageOptions?.length > 0 && (
-          <row>
-            <GeneralImageRecognition
-              imageUrl={imageUrl}
-              options={generalImageOptions}
+        {route === "home" ? (
+          <>
+            <Rank />
+            <ImageLinkForm
+              onInputChange={this.onInputChange}
+              onButtonSubmit={this.onButtonSubmit}
+              onTypeChange={this.onTypeChange}
             />
-          </row>
+
+            {imageUrl && (
+              <ImagePlacement
+                imageUrl={imageUrl}
+                box={box}
+                boxClaculated={boxClaculated}
+              />
+            )}
+            {typeId === "gir" &&
+              imageUrl &&
+              generalImageOptions?.length > 0 && (
+                <row>
+                  <GeneralImageRecognition
+                    imageUrl={imageUrl}
+                    options={generalImageOptions}
+                  />
+                </row>
+              )}
+          </>
+        ) : route === "signin" ? (
+          <Signin onRouteChange={this.onRouteChange} />
+        ) : (
+          <Register onRouteChange={this.onRouteChange} />
         )}
       </div>
     );
