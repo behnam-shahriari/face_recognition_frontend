@@ -1,16 +1,16 @@
-import "./FaceRecognition.css";
+import "./ImagePlacement.css";
 
-const FaceRecognition = ({ imageUrl, box, boxClaculated }) => {
+const ImagePlacement = ({ imageUrl, box, boxClaculated }) => {
   return (
     <div className="center ma">
       <div className="absolute mt2">
-        {/* <img
+        <img
           src={imageUrl}
           id="inputimage"
           alt="Face"
           width="500px"
           height="Auto"
-        /> */}
+        />
         {boxClaculated &&
           box.map((b, i) => (
             <div
@@ -29,4 +29,4 @@ const FaceRecognition = ({ imageUrl, box, boxClaculated }) => {
   );
 };
 
-export default FaceRecognition;
+export default ImagePlacement;

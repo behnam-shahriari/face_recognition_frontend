@@ -4,7 +4,7 @@ const ImageLinkForm = ({ onInputChange, onButtonSubmit, onTypeChange }) => {
   return (
     <div>
       <p className="f3">
-        {"This Magic Brain will detect faces in your pictures. "}
+        {"This Magic Brain will detect everything in your pictures."}
       </p>
       <div className="center">
         <div className="form center pa4 br-3 shadow-5">
@@ -33,8 +33,8 @@ const ImageLinkForm = ({ onInputChange, onButtonSubmit, onTypeChange }) => {
           >
             <option label="Face Recognition" value="fr"></option>
             <option label="General Item Recognition" value="gir"></option>
-            <option label="Food Item Recognition" value="fir"></option>
-            <option label="Gender Recognition" value="gr"></option>
+            {/* <option label="Food Item Recognition" value="fir"></option>
+            <option label="Gender Recognition" value="gr"></option> */}
           </select>
         </div>
       </div>

@@ -1,0 +1,62 @@
+.ba {
+  border-style: solid;
+  border-width: 1px;
+}
+
+.bb {
+  border-bottom-style: solid;
+  border-bottom-width: 1px;
+}
+
+.b--light-silver {
+  border-color: #aaa;
+}
+
+.br2 {
+  border-radius: 0.25rem;
+}
+
+.list {
+  list-style-type: none;
+}
+
+.mw6 {
+  max-width: 32rem;
+}
+
+.pa3 {
+  padding: 1rem;
+}
+
+.pl0 {
+  padding-left: 0;
+}
+
+.pv3 {
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+}
+
+.ph3 {
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+.ml0 {
+  margin-left: 0;
+}
+
+.f4 {
+  font-size: 1.25rem;
+}
+
+.center {
+  margin-right: auto;
+  margin-left: auto;
+}
+
+@media screen and (min-width: 30em) {
+  .pa5-ns {
+    padding: 4rem;
+  }
+}

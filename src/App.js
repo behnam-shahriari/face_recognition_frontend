@@ -4,8 +4,8 @@ import ImageLinkForm from "./components/ImageLinkForm/ImageLinkForm";
 import Navigation from "./components/Navigation/Navigation";
 import Rank from "./components/Rank/Rank";
 import ParticlesBg from "particles-bg";
-import FaceRecognition from "./components/FaceRecognition/FaceRecognition";
 import GeneralImageRecognition from "./components/GeneralImageRecognition/GeneralImageRecognition";
+import ImagePlacement from "./components/ImagePlacement/ImagePlacement";
 
 class App extends Component {
   constructor() {
@@ -31,6 +31,7 @@ class App extends Component {
       imageUrl: "",
       box: [],
       boxClaculated: false,
+      generalImageOptions: [],
     };
   }
 
@@ -71,13 +72,22 @@ class App extends Component {
     this.state.box.push(box);
   };
 
+  detectedObjects = (item) => {
+    this.state.generalImageOptions.push(item?.name);
+  };
+
   onInputChange = (event) => {
     this.setState({ input: event.target.value });
   };
 
   onButtonSubmit = () => {
-    const { input } = this.state;
-    this.setState({ imageUrl: input, boxClaculated: false });
+    const { input, typeId } = this.state;
+    this.setState({
+      imageUrl: input,
+      box: [],
+      boxClaculated: false,
+      generalImageOptions: [],
+    });
     ///////////////////////////////////////////////////////////////////////////////////////////////////
     // In this section, we set the user authentication, user and app ID, model details, and the URL
     // of the image we want as an input. Change these strings to run your own example.
@@ -90,8 +100,18 @@ class App extends Component {
     const USER_ID = "clarifai";
     const APP_ID = "main";
     // Change these to whatever model and image URL you want to use
-    const MODEL_ID = "face-detection";
-    const MODEL_VERSION_ID = "6dc7e46bc9124c5c8824be4822abe105";
+    const MODEL_ID =
+      typeId === "fr"
+        ? "face-detection"
+        : typeId === "gir"
+        ? "general-image-recognition"
+        : "";
+    const MODEL_VERSION_ID =
+      typeId === "fr"
+        ? "6dc7e46bc9124c5c8824be4822abe105"
+        : typeId === "gir"
+        ? "aa7f35c01e0642fda5cf400f543e7c40"
+        : "";
     const IMAGE_URL = input;
 
     ///////////////////////////////////////////////////////////////////////////////////
@@ -137,10 +157,18 @@ class App extends Component {
     )
       .then((response) => response.json())
       .then((result) => {
-        result?.outputs[0]?.data?.regions?.map((boundry) => {
-          return this.displayFaceBox(this.calculateFaceLocation(boundry));
-          // return console.log(boundry.region_info.bounding_box);
-        });
+        const response =
+          typeId === "fr"
+            ? result?.outputs[0]?.data?.regions?.map((boundry) => {
+                return this.displayFaceBox(this.calculateFaceLocation(boundry));
+              })
+            : typeId === "gir"
+            ? result?.outputs[0]?.data?.concepts?.map((option) =>
+                this.detectedObjects(option)
+              )
+            : "";
+
+        return response;
       })
       .catch((error) => console.log("error", error))
       .finally(() => this.setState({ boxClaculated: true }));
@@ -151,7 +179,15 @@ class App extends Component {
   };
 
   render() {
-    const { particleType, imageUrl, box, boxClaculated, typeId } = this.state;
+    const {
+      particleType,
+      imageUrl,
+      box,
+      boxClaculated,
+      typeId,
+      generalImageOptions,
+    } = this.state;
+
     return (
       <div className="App">
         <ParticlesBg className="particles" type={particleType} bg={true} />
@@ -162,19 +198,21 @@ class App extends Component {
           onButtonSubmit={this.onButtonSubmit}
           onTypeChange={this.onTypeChange}
         />
-        {typeId === "fr" && imageUrl && (
-          <FaceRecognition
+
+        {imageUrl && (
+          <ImagePlacement
             imageUrl={imageUrl}
             box={box}
             boxClaculated={boxClaculated}
           />
         )}
-        {typeId === "gir" && imageUrl && (
-          <GeneralImageRecognition
-            imageUrl={imageUrl}
-            box={box}
-            boxClaculated={boxClaculated}
-          />
+        {typeId === "gir" && imageUrl && generalImageOptions?.length > 0 && (
+          <row>
+            <GeneralImageRecognition
+              imageUrl={imageUrl}
+              options={generalImageOptions}
+            />
+          </row>
         )}
       </div>
     );
