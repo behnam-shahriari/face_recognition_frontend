@@ -2,7 +2,7 @@ import "./Style.css";
 
 const GenealImageRecognition = ({ options }) => {
   const heightOfImage = document.getElementById("inputimage").clientHeight + 20;
-  console.log(heightOfImage);
+
   return (
     <div
       style={{

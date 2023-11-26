@@ -59,11 +59,12 @@ class App extends Component {
 
   loadUser = (data) => {
     this.setState({
+      ...this.state.user,
       user: {
         id: data.id,
         name: data.name,
         email: data.email,
-        entries: data.entries0,
+        entries: data.entries,
         joined: data.joined,
       },
     });
@@ -180,6 +181,26 @@ class App extends Component {
     )
       .then((response) => response.json())
       .then((result) => {
+        if (result) {
+          fetch("http://localhost:3000/image", {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              id: this.state.user.id,
+            }),
+          })
+            .then((response) => response.json())
+            .then((count) =>
+              this.setState({
+                user: {
+                  ...this.state.user,
+                  entries: count,
+                },
+              })
+            );
+        }
         const response =
           typeId === "fr"
             ? result?.outputs[0]?.data?.regions?.map((boundry) => {
