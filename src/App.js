@@ -36,6 +36,13 @@ class App extends Component {
       generalImageOptions: [],
       route: "signin",
       isSignedIn: false,
+      user: {
+        id: "",
+        name: "",
+        email: "",
+        entries: 0,
+        joined: "",
+      },
     };
   }
 
@@ -48,6 +55,18 @@ class App extends Component {
     if (particleChangeFlag) {
       setTimeout(this.getParticleType, this.state.particleChangeDuration);
     }
+  };
+
+  loadUser = (data) => {
+    this.setState({
+      user: {
+        id: data.id,
+        name: data.name,
+        email: data.email,
+        entries: data.entries0,
+        joined: data.joined,
+      },
+    });
   };
 
   getParticleType = () => {
@@ -218,7 +237,10 @@ class App extends Component {
         />
         {route === "home" ? (
           <>
-            <Rank />
+            <Rank
+              name={this.state.user.name}
+              entries={this.state.user.entries}
+            />
             <ImageLinkForm
               onInputChange={this.onInputChange}
               onButtonSubmit={this.onButtonSubmit}
@@ -244,9 +266,12 @@ class App extends Component {
               )}
           </>
         ) : route === "signin" ? (
-          <Signin onRouteChange={this.onRouteChange} />
+          <Signin onRouteChange={this.onRouteChange} loadUser={this.loadUser} />
         ) : (
-          <Register onRouteChange={this.onRouteChange} />
+          <Register
+            onRouteChange={this.onRouteChange}
+            loadUser={this.loadUser}
+          />
         )}
       </div>
     );
