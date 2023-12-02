@@ -9,41 +9,43 @@ import ImagePlacement from "./components/ImagePlacement/ImagePlacement";
 import Signin from "./components/Signin/Signin";
 import Register from "./components/Register/Register";
 
+const initialState = {
+  // Particles
+  particleChangeDuration: 15000,
+  particleType: "",
+  particleChangeFlag: false,
+  particleOptions: [
+    "color",
+    "circle",
+    "cobweb",
+    "polygon",
+    "square",
+    "tadpole",
+    "fountain",
+  ],
+  // Model
+  typeId: "fr", // Face Recognition
+  // Others
+  input: "",
+  imageUrl: "",
+  box: [],
+  boxClaculated: false,
+  generalImageOptions: [],
+  route: "signin",
+  isSignedIn: false,
+  user: {
+    id: "",
+    name: "",
+    email: "",
+    entries: 0,
+    joined: "",
+  },
+};
+
 class App extends Component {
   constructor() {
     super();
-    this.state = {
-      // Particles
-      particleChangeDuration: 15000,
-      particleType: "",
-      particleChangeFlag: false,
-      particleOptions: [
-        "color",
-        "circle",
-        "cobweb",
-        "polygon",
-        "square",
-        "tadpole",
-        "fountain",
-      ],
-      // Model
-      typeId: "fr", // Face Recognition
-      // Others
-      input: "",
-      imageUrl: "",
-      box: [],
-      boxClaculated: false,
-      generalImageOptions: [],
-      route: "signin",
-      isSignedIn: false,
-      user: {
-        id: "",
-        name: "",
-        email: "",
-        entries: 0,
-        joined: "",
-      },
-    };
+    this.state = initialState;
   }
 
   componentDidMount = () => {
@@ -224,9 +226,7 @@ class App extends Component {
 
   onRouteChange = (route) => {
     if (route === "signout") {
-      this.setState({
-        isSignedIn: false,
-      });
+      this.setState(initialState);
     } else if (route === "home") {
       this.setState({
         isSignedIn: true,
