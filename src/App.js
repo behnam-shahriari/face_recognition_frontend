@@ -130,7 +130,7 @@ class App extends Component {
         : "";
     const IMAGE_URL = input;
 
-    fetch(`${process.env.BASE_URL}imageUrl`, {
+    fetch(`${process.env.REACT_APP_BASE_URL}imageUrl`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -144,7 +144,7 @@ class App extends Component {
       .then((response) => response.json())
       .then((result) => {
         if (result) {
-          fetch(`${process.env.BASE_URL}image`, {
+          fetch(`${process.env.REACT_APP_BASE_URL}image`, {
             method: "PUT",
             headers: {
               "Content-Type": "application/json",
