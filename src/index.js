@@ -4,7 +4,6 @@ import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import "tachyons";
-// Import dotenv and configure
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
 root.render(
