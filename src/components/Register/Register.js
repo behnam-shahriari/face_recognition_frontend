@@ -23,8 +23,8 @@ class Register extends Component {
   };
 
   onSubmitSignIn = () => {
-    console.log(process.env.BASE_URL);
-    fetch(`${process.env.BASE_URL}register`, {
+    // console.log(process.env.BASE_URL);
+    fetch(`register`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
